@@ -3,8 +3,6 @@ import subprocess
 from Bio import SeqIO
 from utils import *
 import os
-import argparse
-import sys
 from groupsChain import *
 
 parser = argparse.ArgumentParser()
@@ -38,7 +36,7 @@ threshold = args.threshold
 
 filter_output = save_path + "sa_k{}_c{}_filter.out".format(k, threshold)
 
-filter_command = filter_path + " -i {} -k }{} -o {}".format(fasta_path, k, filter_output)
+filter_command = filter_path + " -i {} -k {} -o {}".format(fasta_path, k, filter_output)
 filter_process = subprocess.Popen(filter_command, stdout=subprocess.PIPE, shell=True)
 filter_process.wait()
 
@@ -61,7 +59,7 @@ with open(filter_output) as f:
 group_output = save_path + "groups_k{}_c{}.out".format(k, threshold)
 record_dict = SeqIO.index(fasta_path, "fasta")
 with open(group_output, "w") as fout:
-    for query_id in group_output.keys():
+    for query_id in filter_dict.keys():
         record = record_dict[query_id]
         query_save = save_path + "query_k{}_c{}.fasta".format(k, threshold)
         record.description = ""
