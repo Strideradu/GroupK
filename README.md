@@ -1,7 +1,7 @@
 GroupK
 ====
 
-``GroupK`` is a overlap detection tool for DNA sequnces from PacBio. 
+``GroupK`` is an overlap detection tool for DNA sequnces from PacBio. 
 
 Dependecies
 ----------
