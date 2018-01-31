@@ -1,0 +1,3 @@
+[submodule "yass"]
+	path = yass
+	url = https://strideradu@github.com/Strideradu/yass.git
