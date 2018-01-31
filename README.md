@@ -3,7 +3,7 @@ GroupK
 
 ``GroupK`` is a overlap detection tool for DNA sequnces from PacBio. 
 
-Usage
+Dependecies
 ----------
 * Python 3 (You may need to modify some script if you want to use Python 2.7)
 * [CMake](https://cmake.org/) 3.7 or higher 
