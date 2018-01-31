@@ -15,12 +15,21 @@ Usage
 ----------
 At this stage, our tool consists three part:
 ####Suffix array filter
-Use GCC to build
+A prebuild excecuteble file using GCC 4.8.2 can found under /sa_filter/
+
+Use GCC 4.8 or higher to build
 ```
-cd 
+cd sa_filter
+g++ -std=c++11 *.cpp -o filter 
 ```
+To excecute (although this will be included in the script)
+```
+./filter -i <infile> -k <kmersize> -o <outfile>
+```
+The program will do all against all to compare shared kmer
+
 ####Modified YASS for group hits
-A prebuild excecuteble file can found under /yass/cmake-build-debug
+A prebuild excecuteble file using GCC 4.8.2 can found under /yass/
 
 And to use CMake to build under Linux
 ```
@@ -29,6 +38,11 @@ cmake -G "Unix Makefiles"
 make
 ```
 After finished build, you can use the python script to excecute it to get output of groups of given fasta files
+
+The output format is (seperated by tab)
+```
+query_id, query length, target_id, target_length, groups(x, diagonal, length)
+```
 ####Python script
 
 
