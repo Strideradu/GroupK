@@ -15,7 +15,10 @@ Usage
 ----------
 At this stage, our tool consists three part:
 ####Suffix array filter
-
+Use GCC to build
+```
+cd 
+```
 ####Modified YASS for group hits
 A prebuild excecuteble file can found under /yass/cmake-build-debug
 
