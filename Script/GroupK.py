@@ -4,6 +4,8 @@ from Bio import SeqIO
 from utils import *
 import os
 from groupsChain import *
+import argparse
+import sys
 
 parser = argparse.ArgumentParser()
 parser.add_argument("input", help="path of input fasta file", type=str)
