@@ -9,6 +9,7 @@ import sys
 
 parser = argparse.ArgumentParser()
 parser.add_argument("input", help="path of input fasta file", type=str)
+parser.add_argument("output", help="path of output file", type=str)
 parser.add_argument("--k1", help="kmer size for filtration", type=int, default=15)
 parser.add_argument("--threshold", help="count threshold for shared k1", type=int, default=2)
 parser.add_argument("--k2", help="kmer size for group", type=int, default=9)
@@ -88,24 +89,25 @@ with open(group_output, "w") as fout:
 
 L = statistical_bound_of_waiting_time(args.accuracy, args.k2)
 
-with open(group_output) as f:
-    lines = f.readlines()
+with open(args.output, "w")as fout:
+    with open(group_output) as f:
+        lines = f.readlines()
 
-    for line in lines:
-        group_hit = GroupHit(line, args.size)
-        group_hit.set_ratio(args.ratio)
+        for line in lines:
+            group_hit = GroupHit(line, args.size)
+            group_hit.set_ratio(args.ratio)
 
-        # print group_hit.groups
+            # print group_hit.groups
 
-        group_hit.chain_groups(accuracy=args.accuracy, group_distance=L, rechain_threshold=args.chain,
-                               span_coefficient=args.groupc, identity=args.idbase, release= args.large)
-        # print group_hit.chain_align
-        if group_hit.aligned:
-            output_str = "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(
-                group_hit.query, group_hit.target, str(group_hit.aligned), group_hit.aligned_base,
-                group_hit.overlap_length, group_hit.query_ali_start, group_hit.query_ali_end,
-                group_hit.target_ali_start, group_hit.target_ali_end, group_hit.query_overlap_start,
-                group_hit.query_overlap_end, group_hit.target_overlap_start, group_hit.target_overlap_end
-            )
+            group_hit.chain_groups(accuracy=args.accuracy, group_distance=L, rechain_threshold=args.chain,
+                                   span_coefficient=args.groupc, identity=args.idbase, release= args.large)
+            # print group_hit.chain_align
+            if group_hit.aligned:
+                output_str = "{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}".format(
+                    group_hit.query, group_hit.target, str(group_hit.aligned), group_hit.aligned_base,
+                    group_hit.overlap_length, group_hit.query_ali_start, group_hit.query_ali_end,
+                    group_hit.target_ali_start, group_hit.target_ali_end, group_hit.query_overlap_start,
+                    group_hit.query_overlap_end, group_hit.target_overlap_start, group_hit.target_overlap_end
+                )
 
-            print(output_str)
+                print(output_str, file=fout)
