@@ -36,7 +36,7 @@ fasta_path = args.input
 k = args.k1
 threshold = args.threshold
 
-filter_output = save_path + "sa_k{}_c{}_filter.out".format(k, threshold)
+filter_output = os.path.join(save_path, "sa_k{}_c{}_filter.out".format(k, threshold))
 
 filter_command = filter_path + " -i {} -k {} -o {}".format(fasta_path, k, filter_output)
 filter_process = subprocess.Popen(filter_command, stdout=subprocess.PIPE, shell=True)
@@ -58,7 +58,7 @@ with open(filter_output) as f:
                 else:
                     filter_dict[query_id] = set([target_id])
 
-group_output = save_path + "groups_k{}_c{}.out".format(k, threshold)
+group_output = os.path.join(save_path, "groups_k{}_c{}.out".format(k, threshold))
 record_dict = SeqIO.index(fasta_path, "fasta")
 with open(group_output, "w") as fout:
     for query_id in filter_dict.keys():
