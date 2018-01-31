@@ -51,7 +51,7 @@ with open(filter_output) as f:
             line_sp = line.split("\t")
             query_id = line_sp[0]
             target_id = line_sp[1]
-            count = line_sp[2]
+            count = int(line_sp[2])
             if count >= threshold:
                 if filter_dict.get(query_id, False):
                     filter_dict[query_id].add(target_id)
