@@ -14,7 +14,9 @@ Dependecies
 Usage
 ----------
 At this stage, our tool consists three part:
+
 ####Suffix array filter
+
 A prebuild excecuteble file using GCC 4.8.2 can found under /sa_filter/
 
 Use GCC 4.8 or higher to build
@@ -29,6 +31,7 @@ To excecute (although this will be included in the script)
 The program will do all against all to compare shared kmer
 
 ####Modified YASS for group hits
+
 A prebuild excecuteble file using GCC 4.8.2 can found under /yass/
 
 And to use CMake to build under Linux
@@ -43,7 +46,9 @@ The output format is (seperated by tab)
 ```
 query_id, query length, target_id, target_length, groups(x, diagonal, length)
 ```
+
 ####Python script
+
 To run GroupK, after build the two program above
 ```
 cd script
