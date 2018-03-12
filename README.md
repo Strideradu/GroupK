@@ -1,9 +1,9 @@
 GroupK
 ====
 
-``GroupK`` is a overlap detection tool for DNA sequnces from PacBio. 
+``GroupK`` is an overlap detection tool for DNA sequnces from PacBio. 
 
-Usage
+Dependecies
 ----------
 * Python 3 (You may need to modify some script if you want to use Python 2.7)
 * [CMake](https://cmake.org/) 3.7 or higher 
@@ -14,7 +14,9 @@ Usage
 Usage
 ----------
 At this stage, our tool consists three part:
-####Suffix array filter
+
+#### Suffix array filter
+
 A prebuild excecuteble file using GCC 4.8.2 can found under /sa_filter/
 
 Use GCC 4.8 or higher to build
@@ -28,7 +30,8 @@ To excecute (although this will be included in the script)
 ```
 The program will do all against all to compare shared kmer
 
-####Modified YASS for group hits
+#### Modified YASS for group hits
+
 A prebuild excecuteble file using GCC 4.8.2 can found under /yass/
 
 And to use CMake to build under Linux
@@ -43,7 +46,41 @@ The output format is (seperated by tab)
 ```
 query_id, query length, target_id, target_length, groups(x, diagonal, length)
 ```
-####Python script
+
+#### Python script
+
+To run GroupK, after build the two program above
+```
+cd script
+python GroupK.py [-h] [--k1 K1] [--threshold THRESHOLD] [--k2 K2]
+                 [--accuracy ACCURACY] [--gap GAP] [--chain CHAIN]
+                 [--groupc GROUPC] [--idbase IDBASE] [--ratio RATIO]
+                 [--size SIZE] [--large LARGE]
+                 input output
+                 
+positional arguments:
+    input                 path of input fasta file
+    output                path of output file
+
+optional arguments:
+    -h, --help            show this help message and exit
+    --k1 K1               kmer size for filtration (default: 15)
+    --threshold THRESHOLD
+                        count threshold for shared k1 (default: 2)
+    --k2 K2               kmer size for group (default: 9)
+    --accuracy ACCURACY   accuracy of the reads (default: 0.85)
+    --gap GAP             gap rate (default: 0.12)
+    --chain CHAIN         number of kmer in the chain to report (default: 3)
+    --groupc GROUPC       the coefficeint c in paper to control chaining
+                        threshold, must be non-zero float (default: 4.0)
+    --idbase IDBASE       if the number of identical base meet this threshold
+                        the final chain threshold will be release by the --large times (default: 400)
+    --ratio RATIO         ratio of two overlap region threshold (default: 0.5)
+    --size SIZE           group size threshold (default: 12)
+    --large LARGE         release threhold for large overlap (default: 2)
+
+```
+Right now, the main bottle neck is the yass part.
 
 
 References
