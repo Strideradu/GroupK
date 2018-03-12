@@ -1,4 +1,4 @@
-# use minimap as filter for the experiment
+## use minimap as filter for the experiment
 import subprocess
 from Bio import SeqIO
 from utils import *
@@ -6,6 +6,7 @@ import os
 from groupsChain import *
 import argparse
 import sys
+from timeit import default_timer as timer
 
 parser = argparse.ArgumentParser()
 parser.add_argument("input", help="path of input fasta file", type=str)
@@ -37,11 +38,17 @@ fasta_path = args.input
 k = args.k1
 threshold = args.threshold
 
-filter_output = os.path.join(save_path, "sa_k{}_c{}_filter.out".format(k, threshold))
+filter_output = os.path.join(save_path, "sa_k{}_c{}_groupc{}_filter.out".format(k, threshold, args.groupc))
 
 filter_command = filter_path + " -i {} -k {} -o {}".format(fasta_path, k, filter_output)
+
+start = timer()
+
 filter_process = subprocess.Popen(filter_command, stdout=subprocess.PIPE, shell=True)
 filter_process.wait()
+
+elapsed = (timer()- start)
+print("Time used in suffix array filter is {}".format(elapsed))
 
 # parse minimap output to generate dict to set
 filter_dict = {}
@@ -50,8 +57,8 @@ with open(filter_output) as f:
         line = line.rstrip()
         if line != "" and line[0] != "#":
             line_sp = line.split("\t")
-            query_id = line_sp[0][1:]
-            target_id = line_sp[1][1:]
+            query_id = line_sp[0][1:].split(" ")[0]
+            target_id = line_sp[1][1:].split(" ")[0]
             count = int(line_sp[3])
             if count >= threshold:
                 if filter_dict.get(query_id, False):
@@ -61,10 +68,13 @@ with open(filter_output) as f:
 
 group_output = os.path.join(save_path, "groups_k{}_c{}.out".format(k, threshold))
 record_dict = SeqIO.index(fasta_path, "fasta")
+
+start = timer()
+
 with open(group_output, "w") as fout:
     for query_id in filter_dict.keys():
         record = record_dict[query_id]
-        query_save = save_path + "query_k{}_c{}.fasta".format(k, threshold)
+        query_save = os.path.join(save_path, "query_k{}_c{}.fasta".format(k, threshold))
         record.description = ""
         SeqIO.write(record, query_save, "fasta")
 
@@ -73,10 +83,10 @@ with open(group_output, "w") as fout:
         for target_id in target_list:
             record = record_dict[target_id]
             target_output.append(record)
-        target_save = save_path + "target_k{}_c{}.fasta".format(k, threshold)
+        target_save = os.path.join(save_path, "target_k{}_c{}.fasta".format(k, threshold))
         SeqIO.write(target_output, target_save, "fasta")
 
-        temp_output = save_path + "groups_temp_k{}_c{}.out".format(k, threshold)
+        temp_output = os.path.join(save_path, "groups_temp_k{}_c{}.out".format(k, threshold))
         yass_command = yass_path + ' -p "{}" -m {} -i {} -o {} {} {}'.format('#' * args.k2, args.accuracy, args.gap,
                                                                              temp_output, query_save, target_save)
         process = subprocess.Popen(yass_command, stdout=subprocess.PIPE, shell=True)
@@ -86,8 +96,13 @@ with open(group_output, "w") as fout:
             for line in f.readlines():
                 print(line, end="", file=fout)
 
+elapsed = (timer()- start)
+print()
+print("Time used in group seeds is {}".format(elapsed))
 
 L = statistical_bound_of_waiting_time(args.accuracy, args.k2)
+
+start = timer()
 
 with open(args.output, "w")as fout:
     with open(group_output) as f:
@@ -111,3 +126,6 @@ with open(args.output, "w")as fout:
                 )
 
                 print(output_str, file=fout)
+
+elapsed = (timer()- start)
+print("Time used in chaining is {}".format(elapsed))
