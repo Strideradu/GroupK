@@ -38,7 +38,7 @@ fasta_path = args.input
 k = args.k1
 threshold = args.threshold
 
-filter_output = os.path.join(save_path, "sa_k{}_c{}_groupc{}_filter.out".format(k, threshold, args.groupc))
+filter_output = os.path.join(save_path, "sa_k{}_c{}_groupc_{}_filter.out".format(k, threshold, args.groupc))
 
 filter_command = filter_path + " -i {} -k {} -o {}".format(fasta_path, k, filter_output)
 
@@ -66,7 +66,7 @@ with open(filter_output) as f:
                 else:
                     filter_dict[query_id] = set([target_id])
 
-group_output = os.path.join(save_path, "groups_k{}_c{}.out".format(k, threshold))
+group_output = os.path.join(save_path, "groups_k{}_c{}_groupsc_{}.out".format(k, threshold, args.groupc))
 record_dict = SeqIO.index(fasta_path, "fasta")
 
 start = timer()
@@ -74,7 +74,7 @@ start = timer()
 with open(group_output, "w") as fout:
     for query_id in filter_dict.keys():
         record = record_dict[query_id]
-        query_save = os.path.join(save_path, "query_k{}_c{}.fasta".format(k, threshold))
+        query_save = os.path.join(save_path, "query_k{}_c{}_groupsc_{}.fasta".format(k, threshold, args.groupc))
         record.description = ""
         SeqIO.write(record, query_save, "fasta")
 
@@ -83,10 +83,10 @@ with open(group_output, "w") as fout:
         for target_id in target_list:
             record = record_dict[target_id]
             target_output.append(record)
-        target_save = os.path.join(save_path, "target_k{}_c{}.fasta".format(k, threshold))
+        target_save = os.path.join(save_path, "target_k{}_c{}_groupsc_{}.fasta".format(k, threshold, args.groupc))
         SeqIO.write(target_output, target_save, "fasta")
 
-        temp_output = os.path.join(save_path, "groups_temp_k{}_c{}.out".format(k, threshold))
+        temp_output = os.path.join(save_path, "groups_temp_k{}_c{}_groupsc_{}.out".format(k, threshold, args.groupc))
         yass_command = yass_path + ' -p "{}" -m {} -i {} -o {} {} {}'.format('#' * args.k2, args.accuracy, args.gap,
                                                                              temp_output, query_save, target_save)
         process = subprocess.Popen(yass_command, stdout=subprocess.PIPE, shell=True)
