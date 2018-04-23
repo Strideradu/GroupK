@@ -90,4 +90,4 @@ References
 
 how to cite this tool:
 
-    Du N., Chen J., Sun Y., Improving the sensitivity of detecting long read overlaps using grouped short k-mer matches, submitted to ECCB 2018
+    Du N., Chen J., Sun Y., Improving the sensitivity of detecting long read overlaps using grouped short k-mer matches, submitted to ECCB 2018
