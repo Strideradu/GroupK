@@ -251,6 +251,7 @@ void cal_LCS(uint *seq_sa, uint *LCP_array, uint *seq_index_array, uint *com_LCP
 
     LCS_result: matrix to save the results
     */
+    long int lcp_count = 0;
     for (uint i = 0; i < seq_len - 2; i++)
     {
         // update com_LCS_array
@@ -295,6 +296,7 @@ void cal_LCS(uint *seq_sa, uint *LCP_array, uint *seq_index_array, uint *com_LCP
             }
             else
             {
+                lcp_count++;
                 if (seq_idx1 != seq_idx2)
                 {
                     LCS_result[seq_idx1][seq_idx2]++;
@@ -343,6 +345,7 @@ void cal_LCS(uint *seq_sa, uint *LCP_array, uint *seq_index_array, uint *com_LCP
             j++;
         }
     }
+    cout<<"lcp array search"<<lcp_count<<endl;
 }
 
 int main(int argc, char *argv[])
@@ -543,10 +546,10 @@ int main(int argc, char *argv[])
     {
         for (uint n = m + 1; n < seq_num1; n++)
         {
-            if (LCS_result[n][m] > LCS_result[m][n])
-                LCS_result[m][n] = LCS_result[n][m];
-            if (rev_LCS_result[n][m] > LCS_result[m][n])
-                rev_LCS_result[m][n] = rev_LCS_result[n][m];
+            LCS_result[m][n] += LCS_result[n][m];
+            rev_LCS_result[m][n] += rev_LCS_result[n][m];
+            if(rev_LCS_result[m][n]%2!=0) cout<<"unnormal value: "<<rev_LCS_result[m][n]<<endl;
+            rev_LCS_result[m][n] /=2;
         }
     }
     // output the result

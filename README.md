@@ -88,4 +88,3 @@ References
 
 how to cite this tool:
 
-    Du N., Chen J., Sun Y., Improve the sensitivity of detecting long read overlaps using grouped short k-mer matches, submitted to ISMB 2018
