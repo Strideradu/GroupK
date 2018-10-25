@@ -64,7 +64,7 @@ record_dict = SeqIO.index(fasta_path, "fasta")
 with open(group_output, "w") as fout:
     for query_id in filter_dict.keys():
         record = record_dict[query_id]
-        query_save = save_path + "query_k{}_c{}.fasta".format(k, threshold)
+        query_save = os.path.join(save_path, "query_k{}_c{}.fasta".format(k, threshold))
         record.description = ""
         SeqIO.write(record, query_save, "fasta")
 
@@ -73,10 +73,10 @@ with open(group_output, "w") as fout:
         for target_id in target_list:
             record = record_dict[target_id]
             target_output.append(record)
-        target_save = save_path + "target_k{}_c{}.fasta".format(k, threshold)
+        target_save = os.path.join(save_path, "target_k{}_c{}.fasta".format(k, threshold))
         SeqIO.write(target_output, target_save, "fasta")
 
-        temp_output = save_path + "groups_temp_k{}_c{}.out".format(k, threshold)
+        temp_output = os.path.join(save_path, "groups_temp_k{}_c{}.out".format(k, threshold))
         yass_command = yass_path + ' -p "{}" -m {} -i {} -o {} {} {}'.format('#' * args.k2, args.accuracy, args.gap,
                                                                              temp_output, query_save, target_save)
         process = subprocess.Popen(yass_command, stdout=subprocess.PIPE, shell=True)
