@@ -2,9 +2,11 @@ GroupK
 ====
 
 ``GroupK`` is an overlap detection tool for DNA sequnces from PacBio. 
+Here is the old code for the experiment. The C++ implementation will be released soon
 
 Dependecies
 ----------
+
 * Python 3 (You may need to modify some script if you want to use Python 2.7)
 * [CMake](https://cmake.org/) 3.7 or higher 
 * GCC 4.8 or higher
@@ -88,3 +90,4 @@ References
 
 how to cite this tool:
 
+    Du N., Chen J., Sun Y., Improving the sensitivity of detecting long read overlaps using grouped short k-mer matches, accepted to APBC 2019
